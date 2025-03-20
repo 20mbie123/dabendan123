@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>圳圳の终极拷问</title>
+    <style>
+        :root {
+            --primary-color: #ff758c;
+            --secondary-color: #ff7eb3;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            font-family: 'Microsoft YaHei', system-ui;
+            touch-action: manipulation;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            transform: rotate(-1deg);
+        }
+        .question {
+            font-size: clamp(1.5rem, 6vw, 2.2rem);
+            color: #ff4757;
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 2em;
+            position: relative;
+        }
+        .question::after {
+            content: "❤️";
+            display: block;
+            font-size: 1.5em;
+            margin-top: 0.5em;
+            animation: heartbeat 1.2s infinite;
+        }
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        .btn {
+            padding: 1.2em 2em;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center;
+            user-select: none;
+        }
+        #rejectBtn {
+            background: #70a1ff;
+            color: white;
+            box-shadow: 0 5px 15px rgba(112, 161, 255, 0.4);
+        }
+        #acceptBtn {
+            background: #ff6b81;
+            color: white;
+            opacity: 0.8;
+            transform: scale(0.9);
+            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.4);
+        }
+
+        /* 🌟 新增视频样式 */
+        .love-video {
+            width: 90%;
+            max-width: 400px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            transform: rotate(-2deg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            opacity: 0;
+            animation: videoAppear 1s ease forwards;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes videoAppear {
+            from { transform: translateY(50px) rotate(-2deg); opacity: 0; }
+            to { transform: translateY(0) rotate(-2deg); opacity: 1; }
+        }
+
+        @media (min-width: 480px) {
+            .button-group {
+                grid-template-columns: 1fr 1fr;
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="question">
+            Hi惹惹～<br>
+            圳圳可以成为<br>
+            你的____吗？
+        </div>
+        <div id="videoContainer"></div> <!-- 🌟 视频插入位置 -->
+        <div class="button-group">
+            <button id="rejectBtn" class="btn" onclick="handleReject()">
+                不可以（这不让点）
+            </button>
+            <button id="acceptBtn" class="btn" onclick="handleAccept()">
+                (๑>◡<๑) 立刻贴贴
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let resistanceLevel = 5;
+        const rejectBtn = document.getElementById('rejectBtn');
+        const acceptBtn = document.getElementById('acceptBtn');
+
+        function handleReject() {
+            resistanceLevel--;
+            
+            rejectBtn.innerHTML = getRejectText();
+            rejectBtn.style.transform = `scale(${0.9 + resistanceLevel*0.05})`;
+            acceptBtn.style.opacity = `${1 - (resistanceLevel-1)/10}`;
+            acceptBtn.style.transform = `scale(${1 + (5 - resistanceLevel)*0.1})`;
+
+            if(resistanceLevel <= 2) {
+                rejectBtn.style.background = '#ff9f43';
+                acceptBtn.style.background = '#ff4757';
+            }
+
+            if(resistanceLevel === 0) {
+                rejectBtn.style.display = 'none';
+                acceptBtn.innerHTML = '❤️其实你还是喜欢我的对吗惹惹❤️';
+                acceptBtn.style.transform = 'scale(1.2)';
+                startCelebration();
+            }
+        }
+
+        function getRejectText() {
+            const texts = [
+                "都说了不行了还点",
+                "再点要爆炸惹T-T",
+                "这里真的不可以！",
+                "别点了啊这里不行！",
+                "都说了不行了还点"
+            ];
+            return texts[resistanceLevel] || texts[texts.length-1];
+        }
+
+        function handleAccept() {
+            document.body.style.background = '#ffcccc';
+            rejectBtn.style.display = 'none';
+            acceptBtn.innerHTML = '惹惹，你是一个乖狗狗(=・ω・=)——ps:虽然这个颜文字是一只猫';
+            acceptBtn.style.transform = 'scale(1.5)';
+            
+            // 🌟🌟🌟 替换视频地址开始 🌟🌟🌟
+            const videoHTML = `
+                <video class="love-video" controls autoplay muted>
+                    <source src="https://www.bilibili.com/video/BV1H5FTe2EhE?spm_id_from=333.788.recommend_more_video.0&vd_source=0b77cb65cb9ebfad542a02c924d48c36" type="video/mp4">
+                    <!-- 可选备用格式 -->
+                    <source src="https://example.com/your-video.webm" type="video/webm">
+                    你的浏览器不支持视频播放
+                </video>
+                <div style="text-align:center;margin-top:10px;color:#ff758c;">
+                    ♬ 正在播放：我们的故事
+                </div>
+            `;
+            // 🌟🌟🌟 替换视频地址结束 🌟🌟🌟
+            
+            document.getElementById('videoContainer').innerHTML = videoHTML;
+            startCelebration();
+        }
+
+        function startCelebration() {
+            const emojis = ['❤️','✨','🌟','🎉','🥳'];
+            setInterval(() => {
+                const spark = document.createElement('div');
+                spark.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+                spark.style.cssText = `
+                    position: fixed;
+                    font-size: ${Math.random()*20 + 10}px;
+                    top: ${Math.random()*100}%;
+                    left: ${Math.random()*100}%;
+                    animation: float ${2 + Math.random()*3}s ease-out;
+                    pointer-events: none;
+                    z-index: 999;
+                `;
+                document.body.appendChild(spark);
+                setTimeout(() => spark.remove(), 3000);
+            }, 300);
+
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% { transform: translateY(0) scale(1); opacity: 1; }
+                    100% { transform: translateY(-100px) scale(0); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>
